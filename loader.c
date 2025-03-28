@@ -451,7 +451,7 @@ void state_save(int n)
 	if (n < 0) n = saveslot;
 	if (n < 0) n = 0;
 	name = malloc(strlen(saveprefix) + 5);
-	sprintf(name, "%s.%03d", saveprefix, n);
+	snprintf(name, strlen(saveprefix) + 5, "%s.%03d", saveprefix, n);
 
 	if ((f = fopen(name, "wb")))
 	{
@@ -470,7 +470,7 @@ void state_load(int n)
 	if (n < 0) n = saveslot;
 	if (n < 0) n = 0;
 	name = malloc(strlen(saveprefix) + 5);
-	sprintf(name, "%s.%03d", saveprefix, n);
+	snprintf(name, strlen(saveprefix) + 5, "%s.%03d", saveprefix, n);
 
 	if ((f = fopen(name, "rb")))
 	{
@@ -565,15 +565,15 @@ int loader_init(char *s)
 	else name = ldup(rom.name);
 
 	saveprefix = malloc(strlen(savedir) + strlen(name) + 2);
-	sprintf(saveprefix, "%s/%s", savedir, name);
+	snprintf(saveprefix, strlen(savedir) + strlen(name) + 2, "%s/%s", savedir, name);
 
 	sramfile = malloc(strlen(saveprefix) + 5);
-	strcpy(sramfile, saveprefix);
-	strcat(sramfile, ".sav");
+	strncpy(sramfile, saveprefix, strlen(saveprefix) + 5);
+	strncat(sramfile, ".sav", strlen(saveprefix) + 5);
 
 	rtcfile = malloc(strlen(saveprefix) + 5);
-	strcpy(rtcfile, saveprefix);
-	strcat(rtcfile, ".rtc");
+	strncpy(rtcfile, saveprefix, strlen(saveprefix) + 5);
+	strncat(rtcfile, ".rtc", strlen(saveprefix) + 5);
 
 	sram_load();
 	rtc_load();

@@ -600,21 +600,21 @@ void debug_disassemble(addr a, int c)
 				case 'B':
 				case 'b':
 					ops[k] = readb(a); a++;
-					j += sprintf(mnemonic + j,
+					j += snprintf(mnemonic + j, sizeof(mnemonic) - j,
 						"%02Xh", ops[k++]);
 					break;
 				case 'W':
 				case 'w':
 					ops[k] = readb(a); a++;
 					ops[k+1] = readb(a); a++;
-					j += sprintf(mnemonic + j, "%04Xh",
+					j += snprintf(mnemonic + j, sizeof(mnemonic) - j, "%04Xh",
 						((ops[k+1] << 8) | ops[k]));
 					k += 2;
 					break;
 				case 'O':
 				case 'o':
 					ops[k] = readb(a); a++;
-					j += sprintf(mnemonic + j, "%+d",
+					j += snprintf(mnemonic + j, sizeof(mnemonic) - j, "%+d",
 						(n8)(ops[k++]));
 					break;
 				}

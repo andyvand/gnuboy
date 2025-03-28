@@ -33,7 +33,7 @@ char *path_search(char *name, char *mode, char *path)
 		else l = strlen(p);
 		strncpy(buf, p, l);
 		buf[l] = '/';
-		strcpy(buf+l+1, name);
+		strncpy(buf+l+1, name, strlen(path) + strlen(name) + 2);
 		if ((f = fopen(buf, mode)))
 		{
 			fclose(f);

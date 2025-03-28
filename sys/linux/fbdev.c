@@ -193,7 +193,7 @@ void vid_init()
 
 	if (fb_mode)
 	{
-		sprintf(cmd, FBSET_CMD " %.80s", fb_mode);
+		snprintf(cmd, sizeof(cmd), FBSET_CMD " %.80s", fb_mode);
 		system(cmd);
 	}
 	

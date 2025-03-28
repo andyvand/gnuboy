@@ -248,10 +248,10 @@ static char *base(char *s)
 
 int load_rom_and_rc(char *rom) {
 	char *s, *cmd = malloc(strlen(rom) + 11);
-	sprintf(cmd, "source %s", rom);
+	snprintf(cmd, strlen(rom) + 11, "source %s", rom);
 	s = strchr(cmd, '.');
 	if (s) *s = 0;
-	strcat(cmd, ".rc");
+	strncat(cmd, ".rc", strlen(rom) + 11);
 	rc_command(cmd);
 	free(cmd);
 	rom = strdup(rom);
@@ -266,7 +266,7 @@ int load_rom_and_rc(char *rom) {
 
 int main(int argc, char *argv[])
 {
-	int i, ri = 0, sv = 0;
+	int i, ri = 0, sv = 0, len = 0;
 	char *opt, *arg, *cmd, *s, *rom = 0;
 
 	/* Avoid initializing video if we don't have to */
@@ -315,7 +315,7 @@ int main(int argc, char *argv[])
 		{
 			if (i + 2 >= argc) die("missing arguments to bind\n");
 			cmd = malloc(strlen(argv[i+1]) + strlen(argv[i+2]) + 9);
-			sprintf(cmd, "bind %s \"%s\"", argv[i+1], argv[i+2]);
+			snprintf(cmd, strlen(argv[i+1]) + strlen(argv[i+2]) + 9, "bind %s \"%s\"", argv[i+1], argv[i+2]);
 			rc_command(cmd);
 			free(cmd);
 			i += 2;
@@ -323,8 +323,9 @@ int main(int argc, char *argv[])
 		else if (!strcmp(argv[i], "--source"))
 		{
 			if (i + 1 >= argc) die("missing argument to source\n");
-			cmd = malloc(strlen(argv[i+1]) + 8);
-			sprintf(cmd, "source %s", argv[++i]);
+            len = strlen(argv[i+1]) + 8;
+			cmd = malloc(len);
+			snprintf(cmd, len, "source %s", argv[++i]);
 			rc_command(cmd);
 			free(cmd);
 		}
@@ -333,7 +334,7 @@ int main(int argc, char *argv[])
 			opt = strdup(argv[i]+5);
 			while ((s = strchr(opt, '-'))) *s = '_';
 			cmd = malloc(strlen(opt) + 7);
-			sprintf(cmd, "set %s 0", opt);
+			snprintf(cmd, strlen(opt) + 7, "set %s 0", opt);
 			rc_command(cmd);
 			free(cmd);
 			free(opt);
@@ -351,7 +352,7 @@ int main(int argc, char *argv[])
 			while ((s = strchr(arg, ','))) *s = ' ';
 			
 			cmd = malloc(strlen(opt) + strlen(arg) + 6);
-			sprintf(cmd, "set %s %s", opt, arg);
+			snprintf(cmd, strlen(opt) + strlen(arg) + 6, "set %s %s", opt, arg);
 			
 			rc_command(cmd);
 			free(cmd);

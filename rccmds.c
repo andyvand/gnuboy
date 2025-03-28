@@ -168,7 +168,7 @@ int rc_command(char *line)
 	char *argv[128], *linecopy;
 
 	linecopy = malloc(strlen(line)+1);
-	strcpy(linecopy, line);
+	strncpy(linecopy, line, strlen(line)+1);
 	
 	argc = splitline(argv, (sizeof argv)/(sizeof argv[0]), linecopy);
 	if (!argc)
