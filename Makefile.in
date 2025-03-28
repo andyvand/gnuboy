@@ -34,6 +34,9 @@ SDL_CFLAGS = @SDL_CFLAGS@
 SDL2_OBJS = sys/sdl2/sdl2.o sys/sdl2/sdl-audio.o sys/sdl2/keymap.o sys/sdl2/sdl-joystick.o
 SDL2_LIBS = @SDL2_LIBS@
 
+SDL3_OBJS = sys/sdl3/sdl3.o sys/sdl3/sdl-audio.o sys/sdl3/keymap.o sys/sdl3/sdl-joystick.o
+SDL3_LIBS = @SDL3_LIBS@
+
 X11_OBJS = sys/x11/xlib.o sys/x11/keymap.o @JOY@ @SOUND@
 X11_LIBS = @XLIBS@ -lX11 -lXext
 
@@ -52,6 +55,9 @@ sdlgnuboy: $(OBJS) $(SYS_OBJS) $(SDL_OBJS)
 
 sdl2gnuboy: $(OBJS) $(SYS_OBJS) $(SDL2_OBJS)
 	$(LD) $(OBJS) $(SYS_OBJS) $(SDL2_OBJS) -o $@ $(SDL2_LIBS) $(LDFLAGS)
+
+sdl3gnuboy: $(OBJS) $(SYS_OBJS) $(SDL3_OBJS)
+	$(LD) $(OBJS) $(SYS_OBJS) $(SDL3_OBJS) -o $@ $(SDL3_LIBS) $(LDFLAGS)
 
 sys/sdl/sdl.o: sys/sdl/sdl.c
 	$(MYCC) $(SDL_CFLAGS) -c $< -o $@

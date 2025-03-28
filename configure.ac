@@ -24,6 +24,7 @@ AC_ARG_WITH(fb,      [  --with-fb                       build framebuffer device
 AC_ARG_WITH(svgalib, [  --with-svgalib                  build Linux svgalib interface], [], [with_svgalib=yes])
 AC_ARG_WITH(sdl,     [  --with-sdl                      build SDL interface], [], [with_sdl=auto])
 AC_ARG_WITH(sdl2,    [  --with-sdl2                     build SDL2 interface], [], [with_sdl2=yes])
+AC_ARG_WITH(sdl3,    [  --with-sdl3                     build SDL3 interface], [], [with_sdl3=yes])
 AC_ARG_WITH(sound,   [  --with-sound=no,oss,sdl,ao      select sound interface], [], [with_sound=yes])
 AC_ARG_WITH(x11,     [  --with-x                        build x11 interface], [], [with_x11=auto])
 
@@ -95,7 +96,27 @@ AC_CHECK_LIB(SDL2, SDL_Init, [
 ], $SDL2_LIBS)
 fi
 
-if test "$with_sdl2" = "no" && test "$with_sdl" != "no" ; then
+if test "$with_sdl3" != no ; then
+SDL3_LIBS=-lSDL3
+AC_CHECK_LIB(SDL3, SDL_Init, [
+ AC_CHECK_HEADERS(SDL3/SDL.h, [
+   with_sdl3=yes
+  ], [
+   AC_MSG_WARN(SDL3 found but headers are missing!!)
+   with_sdl3=no
+ ])
+], [
+  AC_MSG_WARN(testing pkg-config for SDL3)
+  if "$PKG_CONFIG" --libs sdl3 >/dev/null 2>&1 ; then
+    with_sdl2=yes
+    SDL2_LIBS=$("$PKG_CONFIG" --libs sdl3)
+  else
+    with_sdl2=no
+  fi
+], $SDL3_LIBS)
+fi
+
+if test "$with_sdl3" = "no" && test "$with_sdl2" = "no" && test "$with_sdl" != "no" ; then
  SDL_LIBS=-lSDL
  AC_CHECK_LIB(SDL, SDL_Init, [
   AC_CHECK_HEADERS(SDL/SDL.h, [
@@ -243,6 +264,7 @@ AC_SUBST(FB_OBJS)
 AC_SUBST(SDL_CFLAGS)
 AC_SUBST(SDL_LIBS)
 AC_SUBST(SDL2_LIBS)
+AC_SUBST(SDL3_LIBS)
 AC_SUBST(TARGETS)
 AC_SUBST(XINCS)
 AC_SUBST(XLIBS)

@@ -10,7 +10,7 @@ INSTALL = /usr/bin/install -c
 
 CFLAGS =  -Wno-unused-function -Wno-deprecated-declarations -Wno-overlength-strings -Wall -O3 -fomit-frame-pointer
 CPPFLAGS = 
-LDFLAGS = $(CFLAGS) -lSDL2
+LDFLAGS = $(CFLAGS)
 ASFLAGS = $(CFLAGS)
 
 TARGETS =  xgnuboy sdl2gnuboy
@@ -32,7 +32,10 @@ SDL_LIBS =
 SDL_CFLAGS = 
 
 SDL2_OBJS = sys/sdl2/sdl2.o sys/sdl2/sdl-audio.o sys/sdl2/keymap.o sys/sdl2/sdl-joystick.o
-SDL2_LIBS = -L/usr/local/lib -lSDL2
+SDL2_LIBS = -L/usr/local/lib -Wl,-rpath,/usr/local/lib -lSDL3
+
+SDL3_OBJS = sys/sdl3/sdl3.o sys/sdl3/sdl-audio.o sys/sdl3/keymap.o sys/sdl3/sdl-joystick.o
+SDL3_LIBS = -lSDL3
 
 X11_OBJS = sys/x11/xlib.o sys/x11/keymap.o sys/dummy/nojoy.o sys/sdl/sdl-audio.o
 X11_LIBS = -L/usr/X11/lib -lX11 -lXext
@@ -52,6 +55,9 @@ sdlgnuboy: $(OBJS) $(SYS_OBJS) $(SDL_OBJS)
 
 sdl2gnuboy: $(OBJS) $(SYS_OBJS) $(SDL2_OBJS)
 	$(LD) $(OBJS) $(SYS_OBJS) $(SDL2_OBJS) -o $@ $(SDL2_LIBS) $(LDFLAGS)
+
+sdl3gnuboy: $(OBJS) $(SYS_OBJS) $(SDL3_OBJS)
+	$(LD) $(OBJS) $(SYS_OBJS) $(SDL3_OBJS) -o $@ $(SDL3_LIBS) $(LDFLAGS)
 
 sys/sdl/sdl.o: sys/sdl/sdl.c
 	$(MYCC) $(SDL_CFLAGS) -c $< -o $@
