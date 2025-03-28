@@ -5,7 +5,6 @@
  * to map rom and sram into memory, so we don't waste virtual memory.
  */
 
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -19,9 +18,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-
 #include "defs.h"
-
 
 #define DOTDIR ".gnuboy"
 

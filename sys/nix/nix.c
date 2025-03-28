@@ -96,9 +96,9 @@ void sys_initpath()
 		return;
 	}
 	buf = malloc(strlen(home) + strlen(DOTDIR) + 8);
-	sprintf(buf, "%s/" DOTDIR ":.", home);
+	snprintf(buf, strlen(home) + strlen(DOTDIR) + 8, "%s/" DOTDIR ":.", home);
 	rc_setvar("rcpath", 1, &buf);
-	sprintf(buf, "%s/" DOTDIR "/saves" , home);
+	snprintf(buf, strlen(home) + strlen(DOTDIR) + 8, "%s/" DOTDIR "/saves" , home);
 	rc_setvar("savedir", 1, &buf);
 	free(buf);
 }

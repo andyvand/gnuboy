@@ -87,7 +87,7 @@ void sys_checkdir(char *path, int wr)
 
 void sys_initpath()
 {
-	char *buf, *home = getenv("HOME");
+    char *buf, *home = "/sd/gnuboy";
 	if (!home)
 	{
 		buf = ".";
@@ -96,9 +96,9 @@ void sys_initpath()
 		return;
 	}
 	buf = malloc(strlen(home) + strlen(DOTDIR) + 8);
-	sprintf(buf, "%s/" DOTDIR ":.", home);
+	snprintf(buf, strlen(home) + strlen(DOTDIR) + 8, "%s/" DOTDIR ":.", home);
 	rc_setvar("rcpath", 1, &buf);
-	sprintf(buf, "%s/" DOTDIR "/saves" , home);
+	snprintf(buf, strlen(home) + strlen(DOTDIR) + 8, "%s/" DOTDIR "/saves" , home);
 	rc_setvar("savedir", 1, &buf);
 	free(buf);
 }
@@ -106,7 +106,3 @@ void sys_initpath()
 void sys_sanitize(char *s)
 {
 }
-
-
-
-
