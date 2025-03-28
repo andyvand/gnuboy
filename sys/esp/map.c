@@ -9,6 +9,8 @@
 
 #include <string.h>
 #include <errno.h>
+#include <stdio.h>
+#include <sys/fcntl.h>
 #include <sys/types.h>
 #include <unistd.h>
 
@@ -26,7 +28,7 @@ byte *map_rom()
 int map_checkdirs()
 {
 	home = malloc(strlen("/sd/gnuboy") + strlen(DOTDIR) + 2);
-	snprintf(home, strlen("/sd/gnuboy") + strlen(DOTDIR) + 2, "%s/" DOTDIR, getenv(HOME));
+	snprintf(home, strlen("/sd/gnuboy") + strlen(DOTDIR) + 2, "%s/" DOTDIR, "/sd/gnuboy");
 	saves = malloc(strlen(home) + 6);
 	snprintf(saves, strlen(home) + 6, "%s/saves", home);
 	
