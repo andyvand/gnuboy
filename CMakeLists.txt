@@ -19,7 +19,7 @@ if(UNIX OR APPLE)
         set(PLATFORM_IMPL sys/nix/map.c sys/nix/nix.c)
 #If not unix probably windows?
 else() 
-        set(PLATFORM_IMPL sys/windows/windows.c)
+        set(PLATFORM_IMPL sys/windows/windows.c GNUBoy.rc)
         add_definitions(-DALT_PATH_SEP)
 endif()
 

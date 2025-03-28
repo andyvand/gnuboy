@@ -26,8 +26,8 @@ extern int main(int argc, const char *argv[]);
 
 void app_task(void *arg)
 {
-    int argc = 2;
-    const char *argv[] = { "gnuboy", "/sd/roms/gb/zelda.gb" };
+    int argc = 1;
+    const char *argv[] = { "gnuboy" };
 
     main(argc, argv);
 
