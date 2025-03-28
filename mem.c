@@ -307,6 +307,8 @@ byte ioreg_read(byte r)
 	case RI_HDMA4:
 	case RI_HDMA5:
 		if (hw.cgb) return REG(r);
+        return 0xff;
+
 	default:
 		return 0xff;
 	}

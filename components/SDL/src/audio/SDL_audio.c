@@ -1995,8 +1995,8 @@ bool SDL_BindAudioStreams(SDL_AudioDeviceID devid, SDL_AudioStream * const *stre
             }
 
             if (!result) {
-                int j;
 #if 0
+                int j;
                 for (j = 0; j < i; j++) {
                     SDL_UnlockMutex(streams[j]->lock);
                 }

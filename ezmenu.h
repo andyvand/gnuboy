@@ -61,10 +61,11 @@ enum ezmenu_input {
 
 static void ezmenu_init(struct ezmenu *m, int hres, int vres,
 	int fontw, int fonth) {
+    int len = sizeof(char *);
 	memset(m, 0, sizeof *m);
 	m->w = hres/fontw;
 	m->h = vres/fonth;
-	m->vislines = calloc(sizeof(char*), m->h);
+	m->vislines = calloc(len, m->h);
 }
 
 static void ezmenu_setlines(struct ezmenu *m, char**lines, unsigned linecount) {
