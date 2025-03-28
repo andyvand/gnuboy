@@ -28,11 +28,11 @@ SVGA_OBJS = sys/svga/svgalib.o sys/pc/keymap.o sys/dummy/nojoy.o sys/sdl/sdl-aud
 SVGA_LIBS = -L/usr/local/lib -lvga
 
 SDL_OBJS = sys/sdl/sdl.o sys/sdl/sdl-audio.o sys/sdl/keymap.o sys/sdl/sdl-joystick.o
-SDL_LIBS = 
+SDL_LIBS = -lSDL
 SDL_CFLAGS = 
 
 SDL2_OBJS = sys/sdl2/sdl2.o sys/sdl2/sdl-audio.o sys/sdl2/keymap.o sys/sdl2/sdl-joystick.o
-SDL2_LIBS = -L/usr/local/lib -Wl,-rpath,/usr/local/lib -lSDL3
+SDL2_LIBS = -lSDL2
 
 SDL3_OBJS = sys/sdl3/sdl3.o sys/sdl3/sdl-audio.o sys/sdl3/keymap.o sys/sdl3/sdl-joystick.o
 SDL3_LIBS = -lSDL3
