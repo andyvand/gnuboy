@@ -16,6 +16,11 @@
 #define LIL(x) ((x<<24)|((x&0xff00)<<8)|((x>>8)&0xff00)|(x>>24))
 #endif
 
+#define CMD_PAD_MACRO(A,B) \
+static int (cmd_ ## A)(int c, char **v) \
+{ pad_set((PAD_ ## B), v[0][0] == '+'); return 0; } \
+static int (cmd_ ## A)(int c, char **v)
+
 typedef unsigned char byte;
 
 typedef unsigned char un8;

@@ -254,7 +254,7 @@ static enum xz_ret dec_block(struct xz_dec *s, struct xz_buf *b)
 
 	if (s->check_type == XZ_CHECK_CRC32)
 		s->crc = xz_crc32(b->out + s->out_start,
-				b->out_pos - s->out_start, s->crc);
+				b->out_pos - s->out_start, (uint32_t)s->crc);
 #ifdef XZ_USE_CRC64
 	else if (s->check_type == XZ_CHECK_CRC64)
 		s->crc = xz_crc64(b->out + s->out_start,
@@ -300,7 +300,7 @@ static void index_update(struct xz_dec *s, const struct xz_buf *b)
 {
 	size_t in_used = b->in_pos - s->in_start;
 	s->index.size += in_used;
-	s->crc = xz_crc32(b->in + s->in_start, in_used, s->crc);
+	s->crc = xz_crc32(b->in + s->in_start, in_used, (uint32_t)s->crc);
 }
 
 /*

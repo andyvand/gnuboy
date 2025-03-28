@@ -2,8 +2,8 @@
 #include <SDL3/SDL.h>
 #endif
 
-#include "input.h"
-#include "rc.h"
+#include "../../input.h"
+#include "../../rc.h"
 
 enum joyaxis { JA_X=0, JA_Y };
 enum joyaxisvalue {

@@ -26,6 +26,18 @@ PSP_MODULE_INFO("GnuBoy", 0, 1, 0);
 PSP_MAIN_THREAD_ATTR(THREAD_ATTR_VFPU | THREAD_ATTR_USER);
 #endif
 
+#ifdef WITH_SDL3
+#include <SDL3/SDL_main.h>
+#endif
+
+#ifdef _MSC_VER
+#define strdup _strdup
+#endif
+
+#if defined(_MSC_VER) && __STDC_WANT_SECURE_LIB__
+#define strncpy(a,b,c) strncpy_s(a,c,b,c)
+#define strncat(a,b,c) strncat_s(a,c,b,c)
+#endif
 
 static char *defaultconfig[] =
 {
@@ -194,7 +206,7 @@ void doevents()
 
 
 
-static void shutdown()
+static void shutdown(void)
 {
 	joy_close();
 	vid_close();
@@ -327,7 +339,7 @@ int main(int argc, char *argv[])
 		else if (!strcmp(argv[i], "--source"))
 		{
 			if (i + 1 >= argc) die("missing argument to source\n");
-            len = strlen(argv[i+1]) + 8;
+            len = (int)(strlen(argv[i+1]) + 8);
 			cmd = malloc(len);
 			snprintf(cmd, len, "source %s", argv[++i]);
 			rc_command(cmd);

@@ -32,7 +32,12 @@ void kb_close();
 
 
 /* FIXME these have different prototype for obsolete ( == M$ ) platforms */
+#ifdef _WIN32
+#include <time.h>
+#else
 #include <sys/time.h>
+#endif
+
 int sys_elapsed(struct timeval *prev);
 void sys_initpath();
 

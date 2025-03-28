@@ -20,7 +20,12 @@ int rc_sourcefile(char *filename)
 	char line[256], *p;
 
 	name = path_search(filename, "r", rcpath);
+#if defined(_MSC_VER) && __STDC_WANT_SECURE_LIB__
+	fopen_s(&f, name, "r");
+#else
 	f = fopen(name, "r");
+#endif
+
 	if (!f) return -1;
 
 	for (;;)

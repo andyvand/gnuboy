@@ -11,24 +11,22 @@
 #include "menu.h"
 #include "sys.h"
 
+#ifdef _MSC_VER
+#define strncpy(a,b,c) strncpy_s(a,c,b,c)
+#endif
 
 /*
  * define the command functions for the controller pad.
  */
 
-#define CMD_PAD(b, B) \
-static int (cmd_ ## b)(int c, char **v) \
-{ pad_set((PAD_ ## B), v[0][0] == '+'); return 0; } \
-static int (cmd_ ## b)(int c, char **v)
-
-CMD_PAD(up, UP);
-CMD_PAD(down, DOWN);
-CMD_PAD(left, LEFT);
-CMD_PAD(right, RIGHT);
-CMD_PAD(a, A);
-CMD_PAD(b, B);
-CMD_PAD(start, START);
-CMD_PAD(select, SELECT);
+CMD_PAD_MACRO(up, UP);
+CMD_PAD_MACRO(down, DOWN);
+CMD_PAD_MACRO(left, LEFT);
+CMD_PAD_MACRO(right, RIGHT);
+CMD_PAD_MACRO(a, A);
+CMD_PAD_MACRO(b, B);
+CMD_PAD_MACRO(start, START);
+CMD_PAD_MACRO(select, SELECT);
 
 
 /*
@@ -73,8 +71,11 @@ static int cmd_unbind(int argc, char **argv)
 	return rc_unbindkey(argv[1]);
 }
 
-static int cmd_unbindall()
+static int cmd_unbindall(int argc, char **argv)
 {
+	(void)argc;
+	(void)argv;
+
 	rc_unbindall();
 	return 0;
 }
@@ -86,14 +87,20 @@ static int cmd_source(int argc, char **argv)
 	return rc_sourcefile(argv[1]);
 }
 
-static int cmd_quit()
+static int cmd_quit(int argc, char **argv)
 {
+	(void)argc;
+	(void)argv;
+
 	exit(0);
 	/* NOT REACHED */
 }
 
-static int cmd_reset()
+static int cmd_reset(int argc, char **argv)
 {
+	(void)argc;
+	(void)argv;
+
 	emu_reset();
 	return 0;
 }

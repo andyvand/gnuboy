@@ -14,8 +14,8 @@
 
 #include <SDL3/SDL.h>
 
-#include "rc.h"
-#include "pcm.h"
+#include "../../rc.h"
+#include "../../pcm.h"
 
 
 struct pcm pcm;
@@ -23,11 +23,11 @@ struct pcm pcm;
 static int sound = 1;
 static int samplerate = 44100;
 static int stereo = 1;
-static SDL_AudioDeviceID device;
-static SDL_AudioStream *dev_stream;
-static int paused;
-static int threaded;
-static volatile int audio_done;
+static SDL_AudioDeviceID device = 0;
+static SDL_AudioStream *dev_stream = NULL;
+static int paused = 0;
+static int threaded = 0;
+static volatile int audio_done = 0;
 
 rcvar_t pcm_exports[] =
 {
@@ -38,16 +38,16 @@ rcvar_t pcm_exports[] =
 	RCV_END
 };
 
-
 static void audio_callback(void *blah, SDL_AudioStream *stream, int add_len, int len)
 {
-    SDL_PutAudioStreamData(stream, pcm.buf, add_len);
+	SDL_PutAudioStreamData(stream, pcm.buf, add_len);
 	audio_done = 1;
 }
 
 void pcm_init()
 {
 	SDL_AudioSpec as = {0}, ob;
+	int sample_frames = 0;
 
 	if (!sound) return;
 
@@ -80,7 +80,11 @@ void pcm_init()
 
 	pcm.hz = ob.freq;
 	pcm.stereo = ob.channels - 1;
-	pcm.len = 65536;
+#ifdef _WIN32
+	pcm.len = 128 * 1024;
+#else
+	pcm.len = 64 * 1024;
+#endif
 	pcm.buf = malloc(pcm.len);
 	pcm.pos = 0;
 	memset(pcm.buf, 0, pcm.len);
@@ -102,10 +106,10 @@ int pcm_submit()
 		pcm.pos = 0;
 		return 1;
 	}
-	min = pcm.len*2;
-	res = (int)SDL_PutAudioStreamData(dev_stream, pcm.buf, pcm.pos) == 0;
+	min = pcm.len * 2;
+	res = (int)(SDL_PutAudioStreamData(dev_stream, pcm.buf, pcm.pos) == true);
 	pcm.pos = 0;
-	while (res == false && SDL_GetAudioStreamQueued(dev_stream) > min)
+	while (res == true && SDL_GetAudioStreamQueued(dev_stream) > min)
 		SDL_Delay(1);
 	return res;
 }

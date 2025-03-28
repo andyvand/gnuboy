@@ -26,6 +26,15 @@
 #include "sound.h"
 #include "sys.h"
 
+#ifdef _MSC_VER
+#define strdup _strdup
+#endif
+
+#if defined(_MSC_VER) && __STDC_WANT_SECURE_LIB__
+#define strncpy(a,b,c) strncpy_s(a,c,b,c)
+#define strncat(a,b,c) strncat_s(a,c,b,c)
+#endif
+
 static int mbc_table[256] =
 {
 	0, 1, 1, 1, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 3,
@@ -108,7 +117,7 @@ static void initmem(void *mem, int size)
 	char *p = mem;
 	if (memrand >= 0)
 	{
-		srand(memrand ? memrand : time(0));
+		srand(memrand ? memrand : (unsigned int)time(0));
 		while(size--) *(p++) = rand();
 	}
 	else if (memfill >= 0)
@@ -118,11 +127,11 @@ static void initmem(void *mem, int size)
 static byte *loadfile(FILE *f, int *len)
 {
 	int c, l = 0, p = 0;
-	byte *d = 0, buf[4096];
+	byte *d = NULL, buf[4096];
 
 	for(;;)
 	{
-		c = fread(buf, 1, sizeof buf, f);
+		c = (int)fread(buf, 1, sizeof buf, f);
 		if (c <= 0) break;
 		l += c;
 		d = realloc(d, l);
@@ -197,14 +206,14 @@ static byte *pkunzip(byte *data, int *len) {
 	int oldlen = *len;
 	if (*len < 128) return data;
 	memcpy(&comp, data+8, 2);
-	comp = LIL(comp);
+	comp = (unsigned short)(LIL((unsigned int)comp) & 0xFFFF);
 	if(comp != 0 && comp != 8) return data;
 	memcpy(&fnl, data+26, 2);
 	memcpy(&el, data+28, 2);
-	fnl = LIL(fnl);
-	el = LIL(el);
+	fnl = (unsigned short)(LIL((unsigned int)fnl) & 0xFFFF);
+	el = (unsigned short)(LIL((unsigned int)el) & 0xFFFF);
 	st = 30 + fnl + el;
-	if(*len < st) return data;
+	if(*len < (int)st) return data;
 	if(comp == 0) {
 		inf_buf = realloc(NULL, *len - st);
 		memcpy(inf_buf, data+st, *len - st);
@@ -216,7 +225,7 @@ static byte *pkunzip(byte *data, int *len) {
 	newlen = 0;
 	new = tinfl_decompress_mem_to_heap(data+st, *len, &newlen, 0);
 	if(new) {
-		*len = newlen;
+		*len = (int)newlen;
 		free(data);
 		return new;
 	}
@@ -260,7 +269,7 @@ static int unxz(byte *data, int len) {
 
 		if(ret == XZ_OK) continue;
 
-		if(write_dec(out, b.out_pos)) goto err;
+		if(write_dec(out, (int)b.out_pos)) goto err;
 
 		if(ret == XZ_STREAM_END) {
 			xz_dec_end(s);
@@ -299,7 +308,11 @@ static byte *decompress(byte *data, int *len)
 
 static FILE* rom_loadfile(char *fn, byte** data, int *len) {
 	FILE *f;
+#if defined(_MSC_VER) && __STDC_WANT_SECURE_LIB__
+	if (strcmp(fn, "-")) fopen_s(&f, fn, "rb");
+#else
 	if (strcmp(fn, "-")) f = fopen(fn, "rb");
+#endif
 	else f = stdin;
 	if (!f) {
 	err:
@@ -417,7 +430,12 @@ int sram_load()
 	/* Consider sram loaded at this point, even if file doesn't exist */
 	ram.loaded = 1;
 
+#if defined(_MSC_VER) && __STDC_WANT_SECURE_LIB__
+	fopen_s(&f, sramfile, "rb");
+#else
 	f = fopen(sramfile, "rb");
+#endif
+
 	if (!f) return -1;
 	fread(ram.sbank, 8192, mbc.ramsize, f);
 	fclose(f);
@@ -434,7 +452,12 @@ int sram_save()
 	if (!mbc.batt || !sramfile || !ram.loaded || !mbc.ramsize)
 		return -1;
 	
+#if defined(_MSC_VER) && __STDC_WANT_SECURE_LIB__
+	fopen_s(&f, sramfile, "wb");
+#else
 	f = fopen(sramfile, "wb");
+#endif
+
 	if (!f) return -1;
 	fwrite(ram.sbank, 8192, mbc.ramsize, f);
 	fclose(f);
@@ -453,7 +476,12 @@ void state_save(int n)
 	name = malloc(strlen(saveprefix) + 5);
 	snprintf(name, strlen(saveprefix) + 5, "%s.%03d", saveprefix, n);
 
+#if defined(_MSC_VER) && __STDC_WANT_SECURE_LIB__
+	fopen_s(&f, name, "wb");
+	if (f != NULL)
+#else
 	if ((f = fopen(name, "wb")))
+#endif
 	{
 		savestate(f);
 		fclose(f);
@@ -472,7 +500,12 @@ void state_load(int n)
 	name = malloc(strlen(saveprefix) + 5);
 	snprintf(name, strlen(saveprefix) + 5, "%s.%03d", saveprefix, n);
 
+#if defined(_MSC_VER) && __STDC_WANT_SECURE_LIB__
+	fopen_s(&f, name, "rb");
+	if (f != NULL)
+#else
 	if ((f = fopen(name, "rb")))
+#endif
 	{
 		loadstate(f);
 		fclose(f);
@@ -488,7 +521,12 @@ void rtc_save()
 {
 	FILE *f;
 	if (!rtc.batt) return;
+#if defined(_MSC_VER) && __STDC_WANT_SECURE_LIB__
+	fopen_s(&f, rtcfile, "wb");
+	if (f == NULL) return;
+#else
 	if (!(f = fopen(rtcfile, "wb"))) return;
+#endif
 	rtc_save_internal(f);
 	fclose(f);
 }
@@ -497,7 +535,12 @@ void rtc_load()
 {
 	FILE *f;
 	if (!rtc.batt) return;
+#if defined(_MSC_VER) && __STDC_WANT_SECURE_LIB__
+	fopen_s(&f, rtcfile, "r");
+	if (f == NULL) return;
+#else
 	if (!(f = fopen(rtcfile, "r"))) return;
+#endif
 	rtc_load_internal(f);
 	fclose(f);
 }
@@ -533,7 +576,7 @@ static char *ldup(char *s)
 	return n;
 }
 
-static void cleanup()
+static void cleanup(void)
 {
 	sram_save();
 	rtc_save();

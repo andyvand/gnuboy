@@ -1,4 +1,9 @@
+#ifndef _WIN32
 #include <dirent.h>
+#else
+#include "sys/windows/dirent.h"
+#endif
+
 #include <string.h>
 #include <sys/stat.h>
 #include <stdio.h>
@@ -15,6 +20,10 @@
 #include "font5x7.h"
 #include "fb.h"
 #include "lcd.h"
+
+#ifdef _MSC_VER
+#define strdup _strdup
+#endif
 
 #ifdef CONFIG_IDF_TARGET
 #include "esp_attr.h"
@@ -207,7 +216,7 @@ static void menu_paint(void) {
 
 	int x,y,l;
 	for(y = 0; y < ezm.h; ++y) {
-		l=strlen(ezm.vislines[y]);
+		l=(int)strlen(ezm.vislines[y]);
 		for(x = 0; x < ezm.w; ++x)
 			font_blit(screen, x*FONTW, y*FONTH, x>=l?' ':ezm.vislines[y][x], y==ezm.vissel);
 	}

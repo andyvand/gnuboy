@@ -7,7 +7,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+
+#ifndef _WIN32
 #include <strings.h>
+#else
+#ifdef _MSC_VER
+#define strcasecmp _stricmp
+#else
+#define strcasecmp stricmp
+#endif
+#endif
 
 #include "input.h"
 

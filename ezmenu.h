@@ -93,7 +93,7 @@ static void ezmenu_update(struct ezmenu *m) {
 	int y, ly = MAX(0, m->sel - vis/2);
 	m->vissel = (m->sel-ly)+(!!m->header)*2;
 	for(y = start; y < end; ++y) {
-		m->vislines[y] = ly>=m->linecount?"":m->lines[ly++];
+		m->vislines[y] = ly>=(int)m->linecount?"":m->lines[ly++];
 	}
 }
 
@@ -106,7 +106,7 @@ static void ezmenu_userinput(struct ezmenu *m, enum ezmenu_input inp) {
 		else
 			m->sel = 0;
 	}
-	else if(m->sel >= m->linecount) {
+	else if(m->sel >= (int)m->linecount) {
 		if(m->wraparound)
 			m->sel = 0;
 		else

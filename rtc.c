@@ -9,6 +9,10 @@
 #include "rtc.h"
 #include "rc.h"
 
+#if defined(_MSC_VER) && __STDC_WANT_SECURE_LIB__
+#define fscanf fscanf_s
+#endif
+
 struct rtc rtc;
 
 static int syncrtc = 1;
@@ -114,7 +118,7 @@ void rtc_load_internal(FILE *f)
 	while (rtc.d >= 365) rtc.d -= 365;
 	rtc.stop &= 1;
 	rtc.carry &= 1;
-	if (rt) rt = (time(0) - rt) * 60;
+	if (rt) rt = (int)((time(0) - rt) * 60);
 	if (syncrtc) while (rt-- > 0) rtc_tick();
 }
 

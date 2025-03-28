@@ -15,9 +15,9 @@
 
 #include <SDL3/SDL.h>
 
-#include "fb.h"
-#include "input.h"
-#include "rc.h"
+#include "../../fb.h"
+#include "../../input.h"
+#include "../../rc.h"
 
 //#define _DEBUG 1
 
@@ -78,7 +78,7 @@ void vid_init()
 
 	if (!vmode[0] || !vmode[1])
 	{
-		if (scale < 1) scale = 1;
+		if (scale < 1) scale = 2;
 		vmode[0] = 160 * scale;
 		vmode[1] = 144 * scale;
 	}
@@ -150,7 +150,7 @@ void vid_init()
 
 	fprintf(stdout, "using renderer %s\n", SDL_GetRendererName(renderer));
 
-    SDL_SetRenderScale(renderer, scale, scale);
+    SDL_SetRenderScale(renderer, (float)scale, (float)scale);
 
 	texture = SDL_CreateTexture(renderer, fmt, SDL_TEXTUREACCESS_STREAMING, 160, 144);
 
@@ -361,8 +361,8 @@ void vid_end()
     SDL_UnlockTexture(texture);
 
 	if (fb.enabled) {
-        dst_rect.w = fb.w;
-        dst_rect.h = fb.h;
+        dst_rect.w = (float)fb.w;
+        dst_rect.h = (float)fb.h;
 
         if (SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0) == false)
         {

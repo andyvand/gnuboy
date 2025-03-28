@@ -10,18 +10,12 @@
 #include "defs.h"
 #include "rc.h"
 
-
-
-
-
+#ifdef _MSC_VER
+#define strdup _strdup
+#endif
 
 static rcvar_t *rcvars;
-
 static int nvars;
-
-
-
-
 
 void rc_export(rcvar_t *v)
 {
@@ -130,7 +124,7 @@ int rc_setvar_n(int i, int c, char **v)
 	case rcv_float:
 		if (c < 1) return -1;
 		f = (float *)rcvars[i].mem;
-		*f = atof(v[0]);
+		*f = (float)atof(v[0]);
 		return 0;
 	case rcv_string:
 		if (c < 1) return -1;

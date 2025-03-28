@@ -27,11 +27,13 @@ find_package(SDL3 REQUIRED)
 
 set(CMAKE_C_STANDARD 99)
 
+if(UNIX OR APPLE) 
 set(CMAKE_C_FLAGS "-Wall")
 
 set(CMAKE_C_FLAGS_RELEASE "-O3")
 
 set(CMAKE_C_FLAGS_DEBUG "-g3")
+endif()
 
 include_directories(./include)
 include_directories(./lib)

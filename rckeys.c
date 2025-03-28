@@ -18,6 +18,10 @@
 #define EXT_RAM_BSS_ATTR
 #endif
 
+#ifdef _MSC_VER
+#define strdup _strdup
+#endif
+
 EXT_RAM_BSS_ATTR char *keybind[MAX_KEYS];
 
 
