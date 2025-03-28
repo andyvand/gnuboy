@@ -11,9 +11,17 @@
 #include "lcdc.h"
 #include "sound.h"
 
+#ifdef CONFIG_IDF_TARGET
+#include "esp_attr.h"
+#endif
+
+#ifndef EXT_RAM_BSS_ATTR
+#define EXT_RAM_BSS_ATTR
+#endif
+
 struct mbc mbc;
 struct rom rom;
-struct ram ram;
+EXT_RAM_BSS_ATTR struct ram ram;
 struct rom bootrom;
 
 /*

@@ -68,7 +68,7 @@ int my_atoi(const char *s)
 			s++;
 			while (*s)
 			{
-				if (isdigit(*s))
+				if (isdigit((int)*s))
 					a = (a<<4) + *s - '0';
 				else if (strchr("ABCDEF", *s))
 					a = (a<<4) + *s - 'A' + 10;
@@ -93,7 +93,7 @@ int my_atoi(const char *s)
 		s++;
 		for (;;)
 		{
-			if (isdigit(*s))
+			if (isdigit((int)*s))
 				a = (a*10) + *s - '0';
 			else return -a;
 			s++;
@@ -101,7 +101,7 @@ int my_atoi(const char *s)
 	}
 	while (*s)
 	{
-		if (isdigit(*s))
+		if (isdigit((int)*s))
 			a = (a*10) + *s - '0';
 		else return a;
 		s++;

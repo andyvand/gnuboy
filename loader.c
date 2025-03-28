@@ -528,7 +528,7 @@ static char *ldup(char *s)
 	int i;
 	char *n, *p;
 	p = n = malloc(strlen(s));
-	for (i = 0; s[i]; i++) if (isalnum(s[i])) *(p++) = tolower(s[i]);
+	for (i = 0; s[i]; i++) if (isalnum((int)s[i])) *(p++) = tolower(s[i]);
 	*p = 0;
 	return n;
 }

@@ -211,6 +211,7 @@ void die(char *fmt, ...)
 	exit(1);
 }
 
+#ifndef CONFIG_IDF_TARGET
 static int bad_signals[] =
 {
 	/* These are all standard, so no need to #ifdef them... */
@@ -228,12 +229,15 @@ static void fatalsignal(int s)
 {
 	die("Signal %d\n", s);
 }
+#endif
 
 static void catch_signals()
 {
+#ifndef CONFIG_IDF_TARGET
 	int i;
 	for (i = 0; bad_signals[i]; i++)
 		signal(bad_signals[i], fatalsignal);
+#endif
 }
 
 

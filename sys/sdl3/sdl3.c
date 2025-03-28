@@ -104,10 +104,14 @@ void vid_init()
         flags |= SDL_WINDOW_RESIZABLE;
 
     if (SDL_InitSubSystem(SDL_INIT_VIDEO) == false)
+    {
         die("SDL: Couldn't initialize SDL subsystem: %s\n", SDL_GetError());
+    }
 
 	if (SDL_Init(SDL_INIT_VIDEO) == false)
-		die("SDL: Couldn't initialize SDL: %s\n", SDL_GetError());
+    {
+        die("SDL: Couldn't initialize SDL: %s\n", SDL_GetError());
+    }
 
 #ifdef HW_ACCEL_OPENGL
 	SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");

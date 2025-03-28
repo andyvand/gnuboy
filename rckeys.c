@@ -10,10 +10,15 @@
 #include "rc.h"
 #include "input.h"
 
+#ifdef CONFIG_IDF_TARGET
+#include "esp_attr.h"
+#endif
 
+#ifndef EXT_RAM_BSS_ATTR
+#define EXT_RAM_BSS_ATTR
+#endif
 
-
-char *keybind[MAX_KEYS];
+EXT_RAM_BSS_ATTR char *keybind[MAX_KEYS];
 
 
 

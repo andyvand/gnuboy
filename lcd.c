@@ -13,6 +13,14 @@
 #include "asm.h"
 #endif
 
+#ifdef CONFIG_IDF_TARGET
+#include "esp_attr.h"
+#endif
+
+#ifndef EXT_RAM_BSS_ATTR
+#define EXT_RAM_BSS_ATTR
+#endif
+
 struct lcd lcd;
 
 struct scan scan;
@@ -41,8 +49,8 @@ struct scan scan;
 #define WT (scan.wt)
 #define WV (scan.wv)
 
-byte patpix[4096][8][8];
-byte patdirty[1024];
+EXT_RAM_BSS_ATTR byte patpix[4096][8][8];
+EXT_RAM_BSS_ATTR byte patdirty[1024];
 byte anydirty;
 
 # define MAX_SCALE 4

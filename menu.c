@@ -16,6 +16,14 @@
 #include "fb.h"
 #include "lcd.h"
 
+#ifdef CONFIG_IDF_TARGET
+#include "esp_attr.h"
+#endif
+
+#ifndef EXT_RAM_BSS_ATTR
+#define EXT_RAM_BSS_ATTR
+#endif
+
 #define FONTW 5
 #define FONTH 7
 #define FONTMAX 127
@@ -23,7 +31,7 @@
 static char *romdir;
 static struct ezmenu ezm;
 static enum menu_page currpage;
-static unsigned char screen[160*144];
+EXT_RAM_BSS_ATTR static unsigned char screen[160*144];
 static char statusline[64];
 
 
