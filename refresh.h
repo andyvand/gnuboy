@@ -57,7 +57,7 @@ typedef un32 un32a MAY_ALIAS;
 
 
 #ifndef ASM_REFRESH_1
-static void refresh_1(void *dest_, byte *src, void *pal_, int cnt)
+static inline void refresh_1(void *dest_, byte *src, void *pal_, int cnt)
 {
 	byte *dest = dest_, *pal = pal_;
 	while(cnt--) *(dest++) = pal[*(src++)];
@@ -65,7 +65,7 @@ static void refresh_1(void *dest_, byte *src, void *pal_, int cnt)
 #endif
 
 #ifndef ASM_REFRESH_2
-static void refresh_2(void *dest_, byte *src, void *pal_, int cnt)
+static inline void refresh_2(void *dest_, byte *src, void *pal_, int cnt)
 {
 	un16a *dest = dest_, *pal = pal_;
 	while (cnt--) *(dest++) = pal[*(src++)];
@@ -73,7 +73,7 @@ static void refresh_2(void *dest_, byte *src, void *pal_, int cnt)
 #endif
 
 #ifndef ASM_REFRESH_3
-static void refresh_3(void *dest_, byte *src, void *pal_, int cnt)
+static inline void refresh_3(void *dest_, byte *src, void *pal_, int cnt)
 {
 	byte *dest = dest_;
 	un32a *pal = pal_;
@@ -89,7 +89,7 @@ static void refresh_3(void *dest_, byte *src, void *pal_, int cnt)
 #endif
 
 #ifndef ASM_REFRESH_4
-static void refresh_4(void *dest_, byte *src, void *pal_, int cnt)
+static inline void refresh_4(void *dest_, byte *src, void *pal_, int cnt)
 {
 	un32a *dest = dest_, *pal = pal_;
 	while (cnt--) *(dest++) = pal[*(src++)];
@@ -98,7 +98,7 @@ static void refresh_4(void *dest_, byte *src, void *pal_, int cnt)
 
 
 #ifndef ASM_REFRESH_1_2X
-static void refresh_1_2x(void *dest_, byte *src, void *pal_, int cnt)
+static inline void refresh_1_2x(void *dest_, byte *src, void *pal_, int cnt)
 {
 	byte *dest = dest_, *pal = pal_;
 	byte c;
@@ -112,7 +112,7 @@ static void refresh_1_2x(void *dest_, byte *src, void *pal_, int cnt)
 #endif
 
 #ifndef ASM_REFRESH_2_2X
-static void refresh_2_2x(void *dest_, byte *src, void *pal_, int cnt)
+static inline void refresh_2_2x(void *dest_, byte *src, void *pal_, int cnt)
 {
 	un16a *dest = dest_, *pal = pal_;
 	un16 c;
@@ -126,10 +126,10 @@ static void refresh_2_2x(void *dest_, byte *src, void *pal_, int cnt)
 #endif
 
 #ifndef ASM_REFRESH_3_2X
-static void refresh_3_2x(void *dest_, byte *src, void *pal_, int cnt)
+static inline void refresh_3_2x(void *dest_, byte *src, void *pal_, int cnt)
 {
 	byte *dest = dest_;
-	un32a *pal = pal;
+	un32a *pal = pal_;
 	un32 c;
 	while (cnt--)
 	{
@@ -143,7 +143,7 @@ static void refresh_3_2x(void *dest_, byte *src, void *pal_, int cnt)
 #endif
 
 #ifndef ASM_REFRESH_4_2X
-static void refresh_4_2x(void *dest_, byte *src, void *pal_, int cnt)
+static inline void refresh_4_2x(void *dest_, byte *src, void *pal_, int cnt)
 {
 	un32a *dest = dest_, *pal = pal_;
 	un32 c;
@@ -157,7 +157,7 @@ static void refresh_4_2x(void *dest_, byte *src, void *pal_, int cnt)
 #endif
 
 #ifndef ASM_REFRESH_2_3X
-static void refresh_2_3x(void *dest_, byte *src, void *pal_, int cnt)
+static inline void refresh_2_3x(void *dest_, byte *src, void *pal_, int cnt)
 {
 	un16a *dest = dest_, *pal = pal_;
 	un16 c;
@@ -172,7 +172,7 @@ static void refresh_2_3x(void *dest_, byte *src, void *pal_, int cnt)
 #endif
 
 #ifndef ASM_REFRESH_3_3X
-static void refresh_3_3x(void *dest_, byte *src, void *pal_, int cnt)
+static inline void refresh_3_3x(void *dest_, byte *src, void *pal_, int cnt)
 {
 	byte* dest = dest_;
 	un32a *pal = pal_;
@@ -189,7 +189,7 @@ static void refresh_3_3x(void *dest_, byte *src, void *pal_, int cnt)
 #endif
 
 #ifndef ASM_REFRESH_4_3X
-static void refresh_4_3x(void *dest_, byte *src, void *pal_, int cnt)
+static inline void refresh_4_3x(void *dest_, byte *src, void *pal_, int cnt)
 {
 	un32a *dest = dest_, *pal = pal_;
 	un32 c;
@@ -204,7 +204,7 @@ static void refresh_4_3x(void *dest_, byte *src, void *pal_, int cnt)
 #endif
 
 #ifndef ASM_REFRESH_3_4X
-static void refresh_3_4x(void *dest_, byte *src, void *pal_, int cnt)
+static inline void refresh_3_4x(void *dest_, byte *src, void *pal_, int cnt)
 {
 	byte *dest = dest_;
 	un32a *pal = pal_;
@@ -221,7 +221,7 @@ static void refresh_3_4x(void *dest_, byte *src, void *pal_, int cnt)
 #endif
 
 #ifndef ASM_REFRESH_4_4X
-static void refresh_4_4x(void *dest_, byte *src, void *pal_, int cnt)
+static inline void refresh_4_4x(void *dest_, byte *src, void *pal_, int cnt)
 {
 	un32a *dest = dest_, *pal = pal_;
 	un32 c;

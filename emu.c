@@ -88,7 +88,7 @@ void emu_run()
 		
 		vid_end();
 		rtc_tick();
-		sound_mix();
+		sound_mix_f();
 		if (!pcm_submit())
 		{
 			delay = framelen - sys_elapsed(timer);

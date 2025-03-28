@@ -26,6 +26,7 @@ static int fullscreen = 0;
 static int use_altenter = 1;
 static int vsync;
 
+static int integer_scale = 1;
 static SDL_Window *win;
 static SDL_Renderer *renderer;
 static SDL_Texture *texture;
@@ -64,7 +65,7 @@ static int mapscancode(SDL_Keycode sym)
 
 void vid_init()
 {
-	int flags;
+	int flags = 0;
 	int scale = rc_getint("scale");
 	int pitch = 0;
 	int fmt = 0;
@@ -74,7 +75,7 @@ void vid_init()
 
 	if (!vmode[0] || !vmode[1])
 	{
-		if (scale < 1) scale = 1;
+		if (scale < 1) scale = /*1*/2;
 		vmode[0] = 160 * scale;
 		vmode[1] = 144 * scale;
 	}
@@ -85,15 +86,23 @@ void vid_init()
 	else
 		die("vmode pixel format not supported, choose 16 or 32");
 
+#if SDL_HWACCEL_OPENGL
 	flags = SDL_WINDOW_OPENGL;
+#endif
 
 	if (fullscreen)
 		flags |= SDL_WINDOW_FULLSCREEN;
+    else
+        flags |= SDL_WINDOW_RESIZABLE;
 
 	if (SDL_Init(SDL_INIT_VIDEO))
 		die("SDL: Couldn't initialize SDL: %s\n", SDL_GetError());
 
+#if SDL_HWACCEL_OPENGL
 	SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
+#elif defined(HW_ACCEL_SOFTWARE)
+    SDL_SetHint(SDL_HINT_RENDER_DRIVER, "software");
+#endif
 
 	if (!(win = SDL_CreateWindow("gnuboy", SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED, vmode[0], vmode[1], flags)))
@@ -122,10 +131,22 @@ void vid_init()
 	texture = SDL_CreateTexture(renderer, fmt,
 			SDL_TEXTUREACCESS_STREAMING, 160, 144);
 
+    SDL_RenderSetLogicalSize(renderer, vmode[0], vmode[1]);
+    integer_scale = rc_getint("integer_scale");
+    if (integer_scale)
+    {
+        int window_width, window_height, render_width, render_height;
+        SDL_GetRendererOutputSize(renderer, &window_width, &window_height);
+        SDL_RenderGetLogicalSize(renderer, &render_width, &render_height);
+        SDL_bool makes_sense = (window_width >= render_width && window_height >= render_height);
+        SDL_RenderSetIntegerScale(renderer, makes_sense);
+    }
+
 	SDL_ShowCursor(0);
 
 	format = SDL_AllocFormat(fmt);
-	SDL_LockTexture(texture, NULL, &pixels, &pitch);
+    const SDL_Rect dst_rect = { 0, 0, fb.w, fb.h };
+	SDL_LockTexture(texture, &dst_rect, &pixels, &pitch);
 
 	fb.delegate_scaling = 1;
 	fb.w = 160;
@@ -228,25 +249,26 @@ void vid_settitle(char *title)
 
 void vid_begin()
 {
+    const SDL_Rect dst_rect = { 0, 0, fb.w, fb.h };
 	void *p = 0;
 	int pitch;
-	SDL_LockTexture(texture, NULL, &p, &pitch);
+	SDL_LockTexture(texture, &dst_rect, &p, &pitch);
 	fb.ptr = p;
+    fb.pitch = pitch;
 }
 
 void vid_end()
 {
+    SDL_Rect dst_rect = { 0, 0, 0, 0 };
+
 	SDL_UnlockTexture(texture);
+
 	if (fb.enabled) {
-		SDL_RenderCopy(renderer, texture, NULL, NULL);
+        dst_rect.w = fb.w;
+        dst_rect.h = fb.h;
+
+        SDL_RenderClear(renderer);
+		SDL_RenderCopy(renderer, texture, NULL, &dst_rect);
 		SDL_RenderPresent(renderer);
 	}
 }
-
-
-
-
-
-
-
-

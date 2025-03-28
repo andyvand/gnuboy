@@ -264,7 +264,6 @@ int load_rom_and_rc(char *rom) {
 	return 0;
 }
 
-
 int main(int argc, char *argv[])
 {
 	int i, ri = 0, sv = 0;
@@ -300,7 +299,7 @@ int main(int argc, char *argv[])
 
 	s = strdup(argv[0]);
 	sys_sanitize(s);
-	sys_initpath(s);
+	sys_initpath();
 
 	for (i = 0; defaultconfig[i]; i++)
 		rc_command(defaultconfig[i]);
@@ -359,7 +358,9 @@ int main(int argc, char *argv[])
 			free(opt);
 		}
 		/* short options not yet implemented */
-		else if (argv[i][0] == '-' && argv[i][1]);
+		else if (argv[i][0] == '-' && argv[i][1])
+        {
+        }
 	}
 
 	/* FIXME - make interface modules responsible for atexit() */

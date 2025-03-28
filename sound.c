@@ -157,7 +157,7 @@ void sound_reset()
 }
 
 
-void sound_mix()
+void sound_mix_f()
 {
 	int s, l, r, f, n;
 
@@ -286,7 +286,7 @@ void sound_mix()
 
 byte sound_read(byte r)
 {
-	sound_mix();
+	sound_mix_f();
 	/* printf("read %02X: %02X\n", r, REG(r)); */
 	return REG(r);
 }
@@ -351,12 +351,12 @@ void sound_write(byte r, byte b)
 	if (!(R_NR52 & 128) && r != RI_NR52) return;
 	if ((r & 0xF0) == 0x30)
 	{
-		if (S3.on) sound_mix();
+		if (S3.on) sound_mix_f();
 		if (!S3.on)
 			WAVE[r-0x30] = ram.hi[r] = b;
 		return;
 	}
-	sound_mix();
+	sound_mix_f();
 	switch (r)
 	{
 	case RI_NR10:

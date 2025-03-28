@@ -33,7 +33,7 @@ byte sound_read(byte r);
 void sound_dirty();
 void sound_off();
 void sound_reset();
-void sound_mix();
+void sound_mix_f();
 void s1_init();
 void s2_init();
 void s3_init();

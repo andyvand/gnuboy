@@ -21,7 +21,7 @@ enum plstatus
 	pl_locked
 };
 
-
+#if 0
 static byte bestmatch(int c)
 {
 	byte n, best;
@@ -50,6 +50,7 @@ static byte bestmatch(int c)
 	}
 	return best;
 }
+#endif
 
 static void makecourse(int c, byte n)
 {
