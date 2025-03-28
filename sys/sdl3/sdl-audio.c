@@ -47,7 +47,6 @@ static void audio_callback(void *blah, SDL_AudioStream *stream, int add_len, int
 void pcm_init()
 {
 	SDL_AudioSpec as = {0}, ob;
-	int sample_frames = 0;
 
 	if (!sound) return;
 
