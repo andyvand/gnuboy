@@ -1,6 +1,7 @@
 *.o
 *.obj
 sconfig.*
+config.*
 .DS_Store
 */.DS_Store
 build
