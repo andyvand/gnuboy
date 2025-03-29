@@ -39,10 +39,10 @@ char *path_search(char *name, char *mode, char *path)
 	char *p, *n;
 	int l;
 
-#ifndef _WIN32
+/*#ifndef _WIN32
 	if (buf != NULL)
 		free(buf);
-#endif
+#endif*/
 
 	buf = NULL;
 	if (!path || !*path || *name == '/')
