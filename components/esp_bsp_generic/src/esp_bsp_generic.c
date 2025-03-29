@@ -57,7 +57,7 @@ static const char *TAG = "BSP-Gen";
 i2s_chan_handle_t i2s_tx_chan = NULL;
 static i2s_chan_handle_t i2s_rx_chan = NULL;
 
-#if defined(CONFIG_BSP_BUTTON_1_TYPE_ADC) || defined(CONFIG_BSP_BUTTON_2_TYPE_ADC) || defined(CONFIG_BSP_BUTTON_3_TYPE_ADC) || defined(CONFIG_BSP_BUTTON_4_TYPE_ADC) || defined(CONFIG_BSP_BUTTON_5_TYPE_ADC) || defined(CONFIG_BSP_BUTTON_6_TYPE_ADC) || defined(CONFIG_BSP_BUTTON_7_TYPE_ADC)
+#if defined(CONFIG_BSP_BUTTON_1_TYPE_ADC) || defined(CONFIG_BSP_BUTTON_2_TYPE_ADC) || defined(CONFIG_BSP_BUTTON_3_TYPE_ADC) || defined(CONFIG_BSP_BUTTON_4_TYPE_ADC) || defined(CONFIG_BSP_BUTTON_5_TYPE_ADC) || defined(CONFIG_BSP_BUTTON_6_TYPE_ADC) || defined(CONFIG_BSP_BUTTON_7_TYPE_ADC) || defined(CONFIG_BSP_BUTTON_8_TYPE_ADC) || defined(CONFIG_BSP_BUTTON_9_TYPE_ADC) || defined(CONFIG_BSP_BUTTON_10_TYPE_ADC)
 static adc_oneshot_unit_handle_t bsp_adc_handle = NULL;
 #endif
 
