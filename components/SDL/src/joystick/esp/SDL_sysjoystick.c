@@ -26,11 +26,11 @@
 
 #include "../../SDL/src/joystick/SDL_sysjoystick.h"
 
-#define NB_BUTTONS 6
-
 #if CONFIG_HW_ODROID_GO
+#define NB_BUTTONS 6
 #define NB_AXIS 2
 #else
+#define NB_BUTTONS 10
 #define NB_AXIS 0
 #endif
 
@@ -88,6 +88,10 @@ static inline int Correct_Axis_Y(int X) {
 #define CONFIG_HW_BUTTON_PIN_NUM_RIGHT CONFIG_BSP_BUTTON_4_GPIO
 #define CONFIG_HW_BUTTON_PIN_NUM_BUTTON1 CONFIG_BSP_BUTTON_5_GPIO
 #define CONFIG_HW_BUTTON_PIN_NUM_BUTTON2 CONFIG_BSP_BUTTON_6_GPIO
+#define CONFIG_HW_BUTTON_PIN_NUM_MENU CONFIG_BSP_BUTTON_7_GPIO
+#define CONFIG_HW_BUTTON_PIN_NUM_START CONFIG_BSP_BUTTON_8_GPIO
+#define CONFIG_HW_BUTTON_PIN_NUM_SELECT CONFIG_BSP_BUTTON_9_GPIO
+#define CONFIG_HW_BUTTON_PIN_NUM_VOL CONFIG_BSP_BUTTON_10_GPIO
 #endif
 
 const int button_gpio[NB_BUTTONS] = {
@@ -104,7 +108,11 @@ const int button_gpio[NB_BUTTONS] = {
     CONFIG_HW_BUTTON_PIN_NUM_LEFT,
     CONFIG_HW_BUTTON_PIN_NUM_RIGHT,
     CONFIG_HW_BUTTON_PIN_NUM_BUTTON1,
-    CONFIG_HW_BUTTON_PIN_NUM_BUTTON2
+    CONFIG_HW_BUTTON_PIN_NUM_BUTTON2,
+    CONFIG_HW_BUTTON_PIN_NUM_START,
+    CONFIG_HW_BUTTON_PIN_NUM_SELECT,
+    CONFIG_HW_BUTTON_PIN_NUM_MENU,
+    CONFIG_HW_BUTTON_PIN_NUM_VOL
 #endif
 };
 
@@ -353,10 +361,10 @@ static bool ESP_JoystickGetGamepadMapping(int device_index, SDL_GamepadMapping *
 #else
         .a = { EMappingKind_Button, 4 },
         .b = { EMappingKind_Button, 5 },
-        .x = { EMappingKind_None, 255 },
-        .y = { EMappingKind_None, 255 },
-        .back = { EMappingKind_None, 255 },
-        .start = { EMappingKind_None, 255 },
+        .x = { EMappingKind_Button, 7 },
+        .y = { EMappingKind_Button, 9 },
+        .back = { EMappingKind_Button, 8 },
+        .start = { EMappingKind_Button, 6 },
 #endif
         .guide = { EMappingKind_None, 255 },
         .leftstick = { EMappingKind_None, 255 },

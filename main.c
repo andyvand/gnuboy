@@ -26,8 +26,10 @@ PSP_MODULE_INFO("GnuBoy", 0, 1, 0);
 PSP_MAIN_THREAD_ATTR(THREAD_ATTR_VFPU | THREAD_ATTR_USER);
 #endif
 
+#ifndef CONFIG_IDF_TARGET
 #ifdef WITH_SDL3
 #include <SDL3/SDL_main.h>
+#endif
 #endif
 
 #ifdef _MSC_VER

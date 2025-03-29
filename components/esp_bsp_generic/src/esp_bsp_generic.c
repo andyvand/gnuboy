@@ -352,6 +352,87 @@ static const bsp_button_config_t bsp_button_config[] = {
     }
 #endif // CONFIG_BSP_BUTTON_7_TYPE_x
 #endif // CONFIG_BSP_BUTTONS_NUM >= 7
+    
+#if CONFIG_BSP_BUTTONS_NUM > 7
+#if CONFIG_BSP_BUTTON_8_TYPE_GPIO
+    {
+        .type = BSP_BUTTON_TYPE_GPIO,
+        .cfg.gpio = {
+            .gpio_num = CONFIG_BSP_BUTTON_8_GPIO,
+            .active_level = CONFIG_BSP_BUTTON_8_LEVEL,
+        }
+    },
+#elif CONFIG_BSP_BUTTON_8_TYPE_ADC
+    {
+        .type = BSP_BUTTON_TYPE_ADC,
+        .cfg.adc = {
+            .adc_channel = CONFIG_BSP_BUTTON_8_ADC_CHANNEL,
+            .button_index = BSP_BUTTON_8,
+#if CONFIG_HW_ODROID_GO
+            .min = 1025,
+            .max = 3073
+#else
+            .min = (CONFIG_BSP_BUTTON_8_ADC_VALUE - 100),
+            .max = (CONFIG_BSP_BUTTON_8_ADC_VALUE + 100)
+#endif
+        }
+    }
+#endif // CONFIG_BSP_BUTTON_8_TYPE_x
+#endif // CONFIG_BSP_BUTTONS_NUM >= 7
+
+#if CONFIG_BSP_BUTTONS_NUM > 8
+#if CONFIG_BSP_BUTTON_9_TYPE_GPIO
+    {
+        .type = BSP_BUTTON_TYPE_GPIO,
+        .cfg.gpio = {
+            .gpio_num = CONFIG_BSP_BUTTON_9_GPIO,
+            .active_level = CONFIG_BSP_BUTTON_9_LEVEL,
+        }
+    },
+#elif CONFIG_BSP_BUTTON_9_TYPE_ADC
+    {
+        .type = BSP_BUTTON_TYPE_ADC,
+        .cfg.adc = {
+            .adc_channel = CONFIG_BSP_BUTTON_9_ADC_CHANNEL,
+            .button_index = BSP_BUTTON_9,
+#if CONFIG_HW_ODROID_GO
+            .min = 1025,
+            .max = 3073
+#else
+            .min = (CONFIG_BSP_BUTTON_9_ADC_VALUE - 100),
+            .max = (CONFIG_BSP_BUTTON_9_ADC_VALUE + 100)
+#endif
+        }
+    }
+#endif // CONFIG_BSP_BUTTON_9_TYPE_x
+#endif // CONFIG_BSP_BUTTONS_NUM >= 8
+
+#if CONFIG_BSP_BUTTONS_NUM > 9
+#if CONFIG_BSP_BUTTON_10_TYPE_GPIO
+    {
+        .type = BSP_BUTTON_TYPE_GPIO,
+        .cfg.gpio = {
+            .gpio_num = CONFIG_BSP_BUTTON_10_GPIO,
+            .active_level = CONFIG_BSP_BUTTON_10_LEVEL,
+        }
+    },
+#elif CONFIG_BSP_BUTTON_10_TYPE_ADC
+    {
+        .type = BSP_BUTTON_TYPE_ADC,
+        .cfg.adc = {
+            .adc_channel = CONFIG_BSP_BUTTON_10_ADC_CHANNEL,
+            .button_index = BSP_BUTTON_10,
+#if CONFIG_HW_ODROID_GO
+            .min = 1025,
+            .max = 3073
+#else
+            .min = (CONFIG_BSP_BUTTON_10_ADC_VALUE - 100),
+            .max = (CONFIG_BSP_BUTTON_10_ADC_VALUE + 100)
+#endif
+        }
+    }
+#endif // CONFIG_BSP_BUTTON_10_TYPE_x
+#endif // CONFIG_BSP_BUTTONS_NUM >= 9
 };
 
 #if CONFIG_BSP_LED_TYPE_GPIO

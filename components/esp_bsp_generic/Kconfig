@@ -50,9 +50,9 @@ menu "Board Support Package (generic)"
         config BSP_BUTTONS_NUM
             int
             prompt "Number of buttons in BSP"
-            default 6
+            default 10
             default 7 if HW_ODROID_GO
-            range 0 7
+            range 0 10
             
         menu "Button 1"
             depends on BSP_BUTTONS_NUM > 0
@@ -402,7 +402,7 @@ menu "Board Support Package (generic)"
         endmenu
 
         menu "Button 7"
-            depends on BSP_BUTTONS_NUM > 7
+            depends on BSP_BUTTONS_NUM > 6
             choice
                 prompt "Button type"
                 default BSP_BUTTON_7_TYPE_GPIO
@@ -425,8 +425,8 @@ menu "Board Support Package (generic)"
                     The GPIO pin for button 7.
                     
             config BSP_BUTTON_7_LEVEL
-                depends on BSP_BUTTON_6_TYPE_GPIO
-                int "Button 6 Active Level"
+                depends on BSP_BUTTON_7_TYPE_GPIO
+                int "Button 7 Active Level"
                 default 0
                 range 0 1
                 help
@@ -441,7 +441,7 @@ menu "Board Support Package (generic)"
                     The ADC unit for button 7.   
            
             config BSP_BUTTON_7_ADC_CHANNEL
-                depends on BSP_BUTTON_6_TYPE_ADC
+                depends on BSP_BUTTON_7_TYPE_ADC
                 int "Button 7 ADC Channel"
                 default 0
                 range 0 9
@@ -456,6 +456,177 @@ menu "Board Support Package (generic)"
                 range 0 2500
                 help
                     The ADC middle value for button 7.
+        endmenu
+
+        menu "Button 8"
+            depends on BSP_BUTTONS_NUM > 7
+            choice
+                prompt "Button type"
+                default BSP_BUTTON_8_TYPE_GPIO
+                help
+                    Select a button type GPIO or ADC
+
+                config BSP_BUTTON_8_TYPE_GPIO
+                    bool "GPIO Button"
+                config BSP_BUTTON_8_TYPE_ADC
+                    bool "ADC Button"
+            endchoice
+            
+            config BSP_BUTTON_8_GPIO
+                depends on BSP_BUTTON_8_TYPE_GPIO
+                int "Button 8 GPIO"
+                default -1
+                default 0 if HW_ODROID_GO
+                range -1 ENV_GPIO_IN_RANGE_MAX
+                help
+                    The GPIO pin for button 8.
+                    
+            config BSP_BUTTON_8_LEVEL
+                depends on BSP_BUTTON_8_TYPE_GPIO
+                int "Button 8 Active Level"
+                default 0
+                range 0 1
+                help
+                    The active level for button 8.
+           
+            config BSP_BUTTON_8_ADC_UNIT
+                depends on BSP_BUTTON_8_TYPE_ADC
+                int "Button 8 ADC Unit"
+                default 1
+                range 0 1
+                help
+                    The ADC unit for button 8.   
+           
+            config BSP_BUTTON_8_ADC_CHANNEL
+                depends on BSP_BUTTON_8_TYPE_ADC
+                int "Button 8 ADC Channel"
+                default 0
+                range 0 9
+                help
+                    The ADC channel for button 8.
+           
+            config BSP_BUTTON_8_ADC_VALUE
+                depends on BSP_BUTTON_8_TYPE_ADC
+                int "Button 8 ADC Value"
+                default 2000
+                default 2048 if HW_ODROID_GO 
+                range 0 2500
+                help
+                    The ADC middle value for button 8.
+        endmenu
+
+        menu "Button 9"
+            depends on BSP_BUTTONS_NUM > 8
+            choice
+                prompt "Button type"
+                default BSP_BUTTON_9_TYPE_GPIO
+                help
+                    Select a button type GPIO or ADC
+
+                config BSP_BUTTON_9_TYPE_GPIO
+                    bool "GPIO Button"
+                config BSP_BUTTON_9_TYPE_ADC
+                    bool "ADC Button"
+            endchoice
+            
+            config BSP_BUTTON_9_GPIO
+                depends on BSP_BUTTON_9_TYPE_GPIO
+                int "Button 9 GPIO"
+                default -1
+                default 0 if HW_ODROID_GO
+                range -1 ENV_GPIO_IN_RANGE_MAX
+                help
+                    The GPIO pin for button 9.
+                    
+            config BSP_BUTTON_9_LEVEL
+                depends on BSP_BUTTON_9_TYPE_GPIO
+                int "Button 9 Active Level"
+                default 0
+                range 0 1
+                help
+                    The active level for button 9.
+           
+            config BSP_BUTTON_9_ADC_UNIT
+                depends on BSP_BUTTON_9_TYPE_ADC
+                int "Button 9 ADC Unit"
+                default 1
+                range 0 1
+                help
+                    The ADC unit for button 9.   
+           
+            config BSP_BUTTON_9_ADC_CHANNEL
+                depends on BSP_BUTTON_8_TYPE_ADC
+                int "Button 9 ADC Channel"
+                default 0
+                range 0 9
+                help
+                    The ADC channel for button 9.
+           
+            config BSP_BUTTON_9_ADC_VALUE
+                depends on BSP_BUTTON_9_TYPE_ADC
+                int "Button 9 ADC Value"
+                default 2000
+                default 2048 if HW_ODROID_GO 
+                range 0 2500
+                help
+                    The ADC middle value for button 9.
+        endmenu
+
+        menu "Button 10"
+            depends on BSP_BUTTONS_NUM > 9
+            choice
+                prompt "Button type"
+                default BSP_BUTTON_10_TYPE_GPIO
+                help
+                    Select a button type GPIO or ADC
+
+                config BSP_BUTTON_10_TYPE_GPIO
+                    bool "GPIO Button"
+                config BSP_BUTTON_10_TYPE_ADC
+                    bool "ADC Button"
+            endchoice
+            
+            config BSP_BUTTON_10_GPIO
+                depends on BSP_BUTTON_10_TYPE_GPIO
+                int "Button 10 GPIO"
+                default -1
+                default 0 if HW_ODROID_GO
+                range -1 ENV_GPIO_IN_RANGE_MAX
+                help
+                    The GPIO pin for button 10.
+                    
+            config BSP_BUTTON_10_LEVEL
+                depends on BSP_BUTTON_10_TYPE_GPIO
+                int "Button 10 Active Level"
+                default 0
+                range 0 1
+                help
+                    The active level for button 10.
+           
+            config BSP_BUTTON_10_ADC_UNIT
+                depends on BSP_BUTTON_10_TYPE_ADC
+                int "Button 10 ADC Unit"
+                default 1
+                range 0 1
+                help
+                    The ADC unit for button 10.   
+           
+            config BSP_BUTTON_10_ADC_CHANNEL
+                depends on BSP_BUTTON_10_TYPE_ADC
+                int "Button 10 ADC Channel"
+                default 0
+                range 0 9
+                help
+                    The ADC channel for button 10.
+           
+            config BSP_BUTTON_10_ADC_VALUE
+                depends on BSP_BUTTON_10_TYPE_ADC
+                int "Button 10 ADC Value"
+                default 2000
+                default 2048 if HW_ODROID_GO 
+                range 0 2500
+                help
+                    The ADC middle value for button 10.
         endmenu
     endmenu
     

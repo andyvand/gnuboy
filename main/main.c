@@ -27,7 +27,7 @@ extern int main(int argc, const char *argv[]);
 void app_task(void *arg)
 {
     int argc = 1;
-    const char *argv[] = { "gnuboy" };
+    const char *argv[] = { "gnuboy", NULL };
 
     main(argc, argv);
 
