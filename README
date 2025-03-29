@@ -32,6 +32,7 @@ it works using the following backends:
 - linux joystick
 - SDL1.2
 - SDL2
+- SDL3
 - X11
 - AO audio
 - OSS audio
