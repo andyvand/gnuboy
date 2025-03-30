@@ -44,7 +44,7 @@ void app_main(void)
     ESP_LOGI(__func__, "gnuboy (%s).\n", __DATE__);
 
 #if CONFIG_STORAGE_LITTLEFS
-    bsp_spiffs_mount();
+    bsp_littlefs_mount();
 #elif CONFIG_STORAGE_SPIFFS
     bsp_spiffs_mount();
 #else
