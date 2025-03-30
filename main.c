@@ -243,18 +243,14 @@ static void fatalsignal(int s)
 {
 	die("Signal %d\n", s);
 }
-#endif
 
 static void catch_signals()
 {
-#if !defined(CONFIG_IDF_TARGET)
 	int i;
 	for (i = 0; bad_signals[i]; i++)
 		signal(bad_signals[i], fatalsignal);
-#endif
 }
-
-
+#endif
 
 static char *base(char *s)
 {
@@ -383,8 +379,11 @@ int main(int argc, char *argv[])
 	}
 
 	/* FIXME - make interface modules responsible for atexit() */
-	atexit(shutdown);
+#if !defined(CONFIG_IDF_TARGET)
+    atexit(shutdown);
 	catch_signals();
+#endif
+
 	vid_init();
 	joy_init();
 	pcm_init();
