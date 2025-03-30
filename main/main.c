@@ -51,5 +51,5 @@ void app_main(void)
     bsp_sdcard_mount();
 #endif
 
-    xTaskCreatePinnedToCore(&app_task, "app_task", 36000, NULL, /*5*/2 | portPRIVILEGE_BIT, NULL, 0);
+    xTaskCreatePinnedToCore(&app_task, "app_task", 20000, NULL, /*5*/2 | portPRIVILEGE_BIT, NULL, 0);
 }
