@@ -123,7 +123,11 @@ void vid_init()
     SDL_SetHint(SDL_HINT_RENDER_DRIVER, "software");
 #endif
 
+#ifdef CONFIG_IDF_TARGET
+    if ((win = SDL_CreateWindow("gnuboy", 320, 240, flags)) == NULL)
+#else
 	if ((win = SDL_CreateWindow("gnuboy", vmode[0], vmode[1], flags)) == NULL)
+#endif
 		die("SDL: can't set video mode: %s\n", SDL_GetError());
 
 	/* for SDL3, which uses OpenGL, we internally use scale 1 and
