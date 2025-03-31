@@ -280,6 +280,7 @@ static enum menu_key menu_translate_key(int k) {
 	case K_DOWN:
 	case K_JOYDOWN:
 		return mk_down;
+    case K_JOY0:
 	case K_ENTER:
 		return mk_ok;
 	case 0:
