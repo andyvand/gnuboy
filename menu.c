@@ -29,10 +29,6 @@
 #include "esp_attr.h"
 #endif
 
-#ifndef EXT_RAM_BSS_ATTR
-#define EXT_RAM_BSS_ATTR
-#endif
-
 #define FONTW 5
 #define FONTH 7
 #define FONTMAX 127
@@ -40,11 +36,20 @@
 static char *romdir;
 static struct ezmenu ezm;
 static enum menu_page currpage;
-EXT_RAM_BSS_ATTR static unsigned char screen[160*144];
+static unsigned char *screen;
 static char statusline[64];
 
+#ifdef CONFIG_IDF_TARGET
+#include "bsp/esp-bsp.h"
+#endif
 
 void menu_init(void) {
+#ifdef CONFIG_IDF_TARGET
+    screen = heap_caps_malloc(160*144, MALLOC_CAP_32BIT | MALLOC_CAP_INTERNAL);
+#else
+    screen = malloc(160*144);
+#endif
+
 	ezmenu_init(&ezm, 160, 144, FONTW, FONTH);
 	ezm.wraparound = 1;
 }

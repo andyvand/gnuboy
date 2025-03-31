@@ -16,8 +16,11 @@
 #include "loader.h"
 #include "mem.h"
 #include "menu.h"
+#include "lcd.h"
 
 #include "Version"
+
+#define NO_SIGNALS 1
 
 #ifdef __psp__
 #include <pspmoduleinfo.h>
@@ -206,14 +209,14 @@ void doevents()
 }
 
 
-
-
+#if !defined(CONFIG_IDF_TARGET) && !defined(NO_SIGNALS)
 static void shutdown(void)
 {
 	joy_close();
 	vid_close();
 	pcm_close();
 }
+#endif
 
 void die(char *fmt, ...)
 {
@@ -225,7 +228,7 @@ void die(char *fmt, ...)
 	exit(1);
 }
 
-#if !defined(CONFIG_IDF_TARGET)
+#if !defined(CONFIG_IDF_TARGET) && !defined(NO_SIGNALS)
 static int bad_signals[] =
 {
 	/* These are all standard, so no need to #ifdef them... */
@@ -306,7 +309,7 @@ int main(int argc, char *argv[])
 	if (ri && !rom) usage(base(argv[0]));
 	if (ri) rominfo(rom);
 
-	/* If we have special perms, drop them ASAP! */
+    /* If we have special perms, drop them ASAP! */
 	vid_preinit();
 
 	init_exports();
@@ -379,12 +382,12 @@ int main(int argc, char *argv[])
 	}
 
 	/* FIXME - make interface modules responsible for atexit() */
-#if !defined(CONFIG_IDF_TARGET)
+#if !defined(CONFIG_IDF_TARGET) && !defined(NO_SIGNALS)
     atexit(shutdown);
 	catch_signals();
 #endif
 
-	vid_init();
+    vid_init();
 	joy_init();
 	pcm_init();
 	menu_init();
@@ -408,14 +411,3 @@ int main(int argc, char *argv[])
 	/* never reached */
 	return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
