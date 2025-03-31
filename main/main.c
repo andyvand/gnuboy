@@ -22,12 +22,15 @@
 
 #include <string.h>
 
+#define GB_FILE NULL
+//#define GB_FILE "/sd/roms/gb/zelda.gb"
+
 extern int main(int argc, const char *argv[]);
 
 void app_task(void *arg)
 {
-    int argc = 1;
-    const char *argv[] = { "gnuboy", NULL };
+    int argc = GB_FILE == NULL ? 1 : 2;
+    const char *argv[] = { "gnuboy", GB_FILE, NULL };
 
     main(argc, argv);
 

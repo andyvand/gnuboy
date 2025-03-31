@@ -587,7 +587,9 @@ int loader_init(char *s)
 {
 	char *name, *p;
 
+#ifndef CONFIG_IDF_TARGET
 	sys_checkdir(savedir, 1); /* needs to be writable */
+#endif
 
 	romfile = s;
 	if(rom_load()) return -1;
