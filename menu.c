@@ -136,6 +136,7 @@ void menu_initpage(enum menu_page page) {
 #ifdef CONFIG_IDF_TARGET
         if(!dir) {
             dir = opendir("/sd/roms/gb");
+            romdir = "/sd/roms/gb";
         }
 #endif
 		if(!dir) {
