@@ -124,7 +124,11 @@ void vid_init()
 #endif
 
 #ifdef CONFIG_IDF_TARGET
-    if ((win = SDL_CreateWindow("gnuboy", 320, 240, flags)) == NULL)
+#if CONFIG_BSP_DISPLAY_ROTATION_SWAP_XY
+    if ((win = SDL_CreateWindow("gnuboy", CONFIG_BSP_DISPLAY_HEIGHT, CONFIG_BSP_DISPLAY_WIDTH, flags)) == NULL)
+#else
+    if ((win = SDL_CreateWindow("gnuboy", CONFIG_BSP_DISPLAY_WIDTH, CONFIG_BSP_DISPLAY_HEIGHT, flags)) == NULL)
+#endif
 #else
 	if ((win = SDL_CreateWindow("gnuboy", vmode[0], vmode[1], flags)) == NULL)
 #endif
