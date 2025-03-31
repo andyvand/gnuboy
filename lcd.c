@@ -95,7 +95,6 @@ static byte *vdest;
 #define MEMCPY8(d, s) memcpy((d), (s), 8)
 #endif
 
-__attribute__((optimize("unroll-loops")))
 static const byte* get_patpix(int i, int x)
 {
     const int index = i & 0x3ff; // 1024 entries
@@ -271,19 +270,19 @@ void bg_scan()
     tile = BG;
     dest = BUF;
     
-    src = get_patpix(*(tile++), V) + U;
+    src = (byte *)get_patpix(*(tile++), V) + U;
     memcpy(dest, src, 8-U);
     dest += 8-U;
     cnt -= 8-U;
     if (cnt <= 0) return;
     while (cnt >= 8)
     {
-        src = get_patpix(*(tile++), V);
+        src = (byte *)get_patpix(*(tile++), V);
         MEMCPY8(dest, src);
         dest += 8;
         cnt -= 8;
     }
-    src = get_patpix(*tile, V);
+    src = (byte *)get_patpix(*tile, V);
     while (cnt--)
         *(dest++) = *(src++);
 }
@@ -301,7 +300,7 @@ void wnd_scan()
     
     while (cnt >= 8)
     {
-        src = get_patpix(*(tile++), WV);
+        src = (byte *)get_patpix(*(tile++), WV);
 #if 0
         MEMCPY8(dest, src);
 #else
@@ -313,7 +312,7 @@ void wnd_scan()
         dest += 8;
         cnt -= 8;
     }
-    src = get_patpix(*tile, WV);
+    src = (byte *)get_patpix(*tile, WV);
     while (cnt--)
         *(dest++) = *(src++);
 }
@@ -397,19 +396,19 @@ void bg_scan_color()
     tile = BG;
     dest = BUF;
     
-    src = get_patpix(*(tile++), V) + U;
+    src = (byte *)get_patpix(*(tile++), V) + U;
     blendcpy(dest, src, *(tile++), 8-U);
     dest += 8-U;
     cnt -= 8-U;
     if (cnt <= 0) return;
     while (cnt >= 8)
     {
-        src = get_patpix(*(tile++), V);
+        src = (byte *)get_patpix(*(tile++), V);
         blendcpy(dest, src, *(tile++), 8);
         dest += 8;
         cnt -= 8;
     }
-    src = get_patpix(*(tile++), V);
+    src = (byte *)get_patpix(*(tile++), V);
     blendcpy(dest, src, *(tile++), cnt);
 }
 #endif
@@ -427,12 +426,12 @@ void wnd_scan_color()
     
     while (cnt >= 8)
     {
-        src = get_patpix(*(tile++), WV);
+        src = (byte *)get_patpix(*(tile++), WV);
         blendcpy(dest, src, *(tile++), 8);
         dest += 8;
         cnt -= 8;
     }
-    src = get_patpix(*(tile++), WV);
+    src = (byte *)get_patpix(*(tile++), WV);
     blendcpy(dest, src, *(tile++), cnt);
 }
 
@@ -544,7 +543,7 @@ void spr_scan()
     
     for (; ns; ns--, vs--)
     {
-        byte* sbuf = get_patpix(vs->pat, vs->v);
+        byte* sbuf = (byte *)get_patpix(vs->pat, vs->v);
 
         x = vs->x;
         if (x >= 160) continue;
@@ -714,7 +713,6 @@ void lcd_linetovram() {
 
 void lcd_refreshline()
 {
-    int i;
     byte *dest;
     static int WL = 0;
 

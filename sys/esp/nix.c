@@ -87,7 +87,7 @@ void sys_checkdir(char *path, int wr)
 
 void sys_initpath()
 {
-    char *buf, *home = "/sd/gnuboy";
+    char *buf, *home = "/sd";
 	if (!home)
 	{
 		buf = ".";

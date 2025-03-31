@@ -133,6 +133,11 @@ void menu_initpage(enum menu_page page) {
 		break;
 	case mp_romsel:
 		dir = opendir(romdir);
+#ifdef CONFIG_IDF_TARGET
+        if(!dir) {
+            dir = opendir("/sd/roms/gb");
+        }
+#endif
 		if(!dir) {
 			loader_set_error("failed to open directory");
 			if(strendswith(romdir, "/.."))
