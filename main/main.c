@@ -22,8 +22,8 @@
 
 #include <string.h>
 
-//#define GB_FILE NULL
-#define GB_FILE "/sd/roms/gb/zelda.gb"
+#define GB_FILE NULL
+//#define GB_FILE "/sd/roms/gb/zelda.gb"
 
 extern int main(int argc, const char *argv[]);
 
