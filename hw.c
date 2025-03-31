@@ -1,6 +1,5 @@
 #include <string.h>
 
-
 #include "defs.h"
 #include "cpu.h"
 #include "hw.h"
@@ -9,10 +8,13 @@
 #include "mem.h"
 #include "fastmem.h"
 
-
 struct hw hw;
 
-
+#ifdef CONFIG_IDF_TARGET
+#include "esp_attr.h"
+#else
+#define IRAM_ATTR
+#endif
 
 /*
  * hw_interrupt changes the virtual interrupt lines included in the
@@ -21,7 +23,7 @@ struct hw hw;
  * lines that transition from low to high.
  */
 
-void hw_interrupt(byte i, byte mask)
+void IRAM_ATTR hw_interrupt(byte i, byte mask)
 {
 	byte oldif = R_IF;
 	i &= 0x1F & mask;
@@ -44,7 +46,7 @@ void hw_interrupt(byte i, byte mask)
  * stall the cpu are necessary.
  */
 
-void hw_dma(byte b)
+void IRAM_ATTR hw_dma(byte b)
 {
 	int i;
 	addr a;
@@ -56,7 +58,7 @@ void hw_dma(byte b)
 
 
 
-void hw_hdma_cmd(byte c)
+void IRAM_ATTR hw_hdma_cmd(byte c)
 {
 	int cnt;
 	addr sa;
@@ -87,7 +89,7 @@ void hw_hdma_cmd(byte c)
 }
 
 
-void hw_hdma()
+void IRAM_ATTR hw_hdma()
 {
 	int cnt;
 	addr sa;
@@ -113,7 +115,7 @@ void hw_hdma()
  * interrupt line) if a transition has been made.
  */
 
-void pad_refresh()
+void IRAM_ATTR pad_refresh()
 {
 	byte oldp1;
 	oldp1 = R_P1;

@@ -11,7 +11,14 @@
 #include "noise.h"
 #include "sys.h"
 
-const static byte dmgwave[16] =
+#ifdef CONFIG_IDF_TARGET
+#include "esp_attr.h"
+#else
+#define IRAM_ATTR
+#define DRAM_ATTR
+#endif
+
+const static byte DRAM_ATTR dmgwave[16] =
 {
 	0xac, 0xdd, 0xda, 0x48,
 	0x36, 0x02, 0xcf, 0x16,
@@ -19,7 +26,7 @@ const static byte dmgwave[16] =
 	0xac, 0xdd, 0xda, 0x48
 };
 
-const static byte cgbwave[16] =
+const static byte DRAM_ATTR cgbwave[16] =
 {
 	0x00, 0xff, 0x00, 0xff,
 	0x00, 0xff, 0x00, 0xff,
@@ -27,7 +34,7 @@ const static byte cgbwave[16] =
 	0x00, 0xff, 0x00, 0xff,
 };
 
-const static byte sqwave[4][8] =
+const static byte DRAM_ATTR sqwave[4][8] =
 {
 	{  0, 0,-1, 0, 0, 0, 0, 0 },
 	{  0,-1,-1, 0, 0, 0, 0, 0 },
@@ -35,7 +42,7 @@ const static byte sqwave[4][8] =
 	{ -1, 0, 0,-1,-1,-1,-1,-1 }
 };
 
-const static int freqtab[8] =
+const static int DRAM_ATTR freqtab[8] =
 {
 	(1<<14)*2,
 	(1<<14),
@@ -157,7 +164,7 @@ void sound_reset()
 }
 
 
-void sound_mix_f()
+void IRAM_ATTR sound_mix_f()
 {
 	int s, l, r, f, n;
 
@@ -340,7 +347,7 @@ void s4_init()
 }
 
 
-void sound_write(byte r, byte b)
+void IRAM_ATTR sound_write(byte r, byte b)
 {
 #if 0
 	static void *timer;

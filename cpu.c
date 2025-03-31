@@ -17,11 +17,13 @@
 #include "asm.h"
 #endif
 
-
 struct cpu cpu;
 
-
-
+#ifdef CONFIG_IDF_TARGET
+#include "esp_attr.h"
+#else
+#define IRAM_ATTR
+#endif
 
 #define ZFLAG(n) ( (n) ? 0 : FZ )
 #define HFLAG(n) ( (n) ? 0 : FH )
@@ -266,7 +268,7 @@ void cpu_reset()
 }
 
 
-void div_advance(int cnt)
+void IRAM_ATTR div_advance(int cnt)
 {
 	cpu.div += (cnt<<1);
 	if (cpu.div >= 256)
@@ -276,7 +278,7 @@ void div_advance(int cnt)
 	}
 }
 
-void timer_advance(int cnt)
+void IRAM_ATTR timer_advance(int cnt)
 {
 	int unit, tima;
 	
@@ -311,7 +313,7 @@ void sound_advance(int cnt)
 	cpu.snd += cnt;
 }
 
-void cpu_timers(int cnt)
+void IRAM_ATTR cpu_timers(int cnt)
 {
 	div_advance(cnt << cpu.speed);
 	timer_advance(cnt << cpu.speed);
@@ -319,7 +321,7 @@ void cpu_timers(int cnt)
 	sound_advance(cnt);
 }
 
-int cpu_idle(int max)
+int IRAM_ATTR cpu_idle(int max)
 {
 	int cnt, unit;
 
@@ -357,7 +359,7 @@ int cpu_idle(int max)
 
 extern int debug_trace;
 
-int cpu_emulate(int cycles)
+int IRAM_ATTR cpu_emulate(int cycles)
 {
 	int i;
 	byte op, cbop;
@@ -928,7 +930,7 @@ next:
 
 #ifndef ASM_CPU_STEP
 
-int cpu_step(int max)
+int IRAM_ATTR cpu_step(int max)
 {
 	int cnt;
 	if ((cnt = cpu_idle(max))) return cnt;
@@ -936,15 +938,3 @@ int cpu_step(int max)
 }
 
 #endif /* ASM_CPU_STEP */
-
-
-
-
-
-
-
-
-
-
-
-

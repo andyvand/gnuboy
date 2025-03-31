@@ -1,7 +1,10 @@
-
-
 #include "fastmem.h"
 
+#ifdef CONFIG_IDF_TARGET
+#include "esp_attr.h"
+#else
+#define DRAM_ATTR
+#endif
 
 #define D 0 /* direct */
 #define C 1 /* direct cgb-only */
@@ -11,9 +14,9 @@
 
 #define F 0xFF /* fail */
 
-const byte himask[256];
+const byte DRAM_ATTR himask[256];
 
-const byte hi_rmap[256] =
+const byte DRAM_ATTR hi_rmap[256] =
 {
 	0, 0, R, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S,
@@ -25,7 +28,7 @@ const byte hi_rmap[256] =
 	C, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 };
 
-const byte hi_wmap[256] =
+const byte DRAM_ATTR hi_wmap[256] =
 {
 	R, R, R, R, R, R, R, R, R, R, R, R, R, R, R, R,
 	S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S,

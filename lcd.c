@@ -10,12 +10,18 @@
 #include "rc.h"
 #include "fb.h"
 
+#ifdef CONFIG_IDF_TARGET
+#include "esp_attr.h"
+#else
+#define IRAM_ATTR
+#define DRAM_ATTR
+#endif
+
 // Important! Colors are defined in reversed order: 0xBBGGRR !!!
 //#define GB_GNUBOY_LEGACY { 0x98d0e0, 0x68a0b0, 0x60707C, 0x2C3C3C } /* Here is the pre 1.1.x palette */
 #define GB_SDL2GNUBOY_PALETTE { 0x0fbc9b, 0x0fac8b, 0x306230, 0x0f380f } /* Newer style green palette*/
 
 struct lcd lcd;
-
 struct scan scan;
 
 #define MAX_SCALE 4
@@ -95,7 +101,7 @@ static byte *vdest;
 #define MEMCPY8(d, s) memcpy((d), (s), 8)
 #endif
 
-static const byte* get_patpix(int i, int x)
+static const byte* IRAM_ATTR get_patpix(int i, int x)
 {
     const int index = i & 0x3ff; // 1024 entries
     const int rotation = i >> 10; // / 1024;
@@ -160,19 +166,19 @@ void updatepatpix()
 {
 }
 
+static int DRAM_ATTR wraptable[64] =
+{
+    0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,-32
+};
 
-void tilebuf()
+void IRAM_ATTR tilebuf()
 {
     int i, cnt;
     int base;
     byte *tilemap, *attrmap;
     int *tilebuf;
     int *wrap;
-    static int wraptable[64] =
-    {
-        0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,-32
-    };
 
     base = ((R_LCDC&0x08)?0x1C00:0x1800) + (T<<5) + S;
     tilemap = lcd.vbank[0] + base;
@@ -259,7 +265,7 @@ void tilebuf()
 }
 
 
-void bg_scan()
+void IRAM_ATTR bg_scan()
 {
     int cnt;
     byte *src, *dest;
@@ -328,7 +334,7 @@ static int priused(void *attr)
     return (int)((a[0]|a[1]|a[2]|a[3]|a[4]|a[5]|a[6]|a[7])&0x80808080);
 }
 
-void bg_scan_pri()
+void IRAM_ATTR bg_scan_pri()
 {
     int cnt, i;
     byte *src, *dest;
@@ -358,7 +364,7 @@ void bg_scan_pri()
     memset(dest, src[i&31]&128, cnt);
 }
 
-void wnd_scan_pri()
+void IRAM_ATTR wnd_scan_pri()
 {
     int cnt, i;
     byte *src, *dest;
@@ -385,7 +391,7 @@ void wnd_scan_pri()
 }
 
 #ifndef ASM_BG_SCAN_COLOR
-void bg_scan_color()
+void IRAM_ATTR bg_scan_color()
 {
     int cnt;
     byte *src, *dest;
@@ -413,7 +419,7 @@ void bg_scan_color()
 }
 #endif
 
-void wnd_scan_color()
+void IRAM_ATTR wnd_scan_color()
 {
     int cnt;
     byte *src, *dest;
@@ -440,7 +446,7 @@ static void recolor(byte *buf, byte fill, int cnt)
     while (cnt--) *(buf++) |= fill;
 }
 
-void spr_count()
+void IRAM_ATTR spr_count()
 {
     int i;
     struct obj *o;
@@ -460,7 +466,7 @@ void spr_count()
     }
 }
 
-void spr_enum()
+void IRAM_ATTR spr_enum()
 {
     int i, j;
     struct obj *o;
@@ -528,7 +534,7 @@ void spr_enum()
     memcpy(VS, ts, sizeof ts);
 }
 
-void spr_scan()
+void IRAM_ATTR spr_scan()
 {
     int i, x;
     byte pal, b, ns = NS;
@@ -711,7 +717,7 @@ void lcd_linetovram() {
     else vdest += fb.pitch * work_scale;
 }
 
-void lcd_refreshline()
+void IRAM_ATTR lcd_refreshline()
 {
     byte *dest;
     static int WL = 0;
@@ -931,7 +937,7 @@ void pal_write(int i, byte b)
     updatepalette(i>>1);
 }
 
-void pal_write_dmg(int i, int mapnum, byte d)
+void IRAM_ATTR pal_write_dmg(int i, int mapnum, byte d)
 {
     int j;
     int *cmap = dmg_pal[mapnum];
